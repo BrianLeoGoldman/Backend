@@ -1,0 +1,29 @@
+[
+    {
+        "id":-1,
+        "title":"Testing product 1",
+        "description":"Product for testing purposes",
+        "price":23000,
+        "thumbnail":"../img/general_product.jpg",
+        "code":78122,
+        "stock":13
+    },
+    {
+        "id":-2,
+        "title":"Testing product 2",
+        "description":"Product for testing purposes",
+        "price":17500,
+        "thumbnail":"../img/general_product.jpg",
+        "code":99344,
+        "stock":21
+    },
+    {
+        "id":1,
+        "title":"Chair",
+        "description":"Practical chair for PC use",
+        "price":137000,
+        "thumbnail":"../img/chair",
+        "code":44233,
+        "stock":8
+    }
+]
