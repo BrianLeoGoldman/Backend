@@ -46,8 +46,16 @@ class ProductManager {
         }
     }
 
-    getProductById(){
-        // TODO
+    async getProductById(id){
+        await this.getProducts()
+            .then((data)=> {
+                console.log("Loking for product...")
+                console.log('Data: ', data)
+                return data.find((product) => product.id === id)
+            })
+            .catch((error)=> {
+                console.log('Error when trying to get product with id ' + id + ': ', error)
+            })
     }
 
     updateProduct(){
@@ -67,18 +75,25 @@ function isValid(field){
 }
 
 const product_manager = new ProductManager('products.json')
-product_manager.addProduct(
+/* product_manager.addProduct(
     "Chair", 
     "Practical chair for PC use", 
     137000, 
     "../img/chair", 
     44233, 
     8
-)
-product_manager.getProducts()
+) */
+/* product_manager.getProducts()
     .then((data)=> {
         console.log('First product: ', data[0])
         console.log('Second product: ', data[1])
+    })
+    .catch((error)=> {
+        console.log(error)
+    }) */
+product_manager.getProductById(1)
+    .then((data)=> {
+        console.log('Product searched: ', data)
     })
     .catch((error)=> {
         console.log(error)
