@@ -47,15 +47,19 @@ class ProductManager {
     }
 
     async getProductById(id){
-        await this.getProducts()
-            .then((data)=> {
-                console.log("Loking for product...")
-                console.log('Data: ', data)
-                return data.find((product) => product.id === id)
-            })
-            .catch((error)=> {
-                console.log('Error when trying to get product with id ' + id + ': ', error)
-            })
+        try {
+            const data = await this.fs.readFile(this.path, 'utf-8')
+            const product = JSON.parse(data).find((elem) => elem.id === id)
+            if(product){
+                console.log("Product with id " + id + " doesn't exists")
+            } 
+            else {
+                return (product)
+            }
+        }
+        catch (error) {
+            console.log('Error when trying to read file: ', error)
+        }
     }
 
     updateProduct(){
@@ -91,7 +95,7 @@ const product_manager = new ProductManager('products.json')
     .catch((error)=> {
         console.log(error)
     }) */
-product_manager.getProductById(1)
+product_manager.getProductById(4)
     .then((data)=> {
         console.log('Product searched: ', data)
     })
