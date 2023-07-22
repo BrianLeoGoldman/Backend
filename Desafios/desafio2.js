@@ -1,153 +1,112 @@
-const { error } = require('console')
+// Manejo de archivos en Javascript
 
-class ProductManager {
+const fs = require('fs')
 
-    constructor(path){
-        this.path = path
-        this.id = 1
-        this.fs = require('fs').promises
+// Implementacion clase Contenedor
+class Contenedor {
+    constructor(file) {
+        this.file = file
     }
 
-    async addProduct(product){
-        if (!this.isValid(product)){
-            console.log("Product is not valid due to missing fields...")
-            return
-        }
+    async save(product) {
         try {
-            const data = await this.fs.readFile(this.path, 'utf-8') 
-            let array = JSON.parse(data)
-            if(!array.some((elem) => elem.id === this.id)){
-                const new_id = this.id
-                this.id++
-                product = { ...product, id: new_id }
-                array.push(product)
-                await this.fs.writeFile(this.path, JSON.stringify(array))
-                console.log('Product ' + product.title + ' added')
-            }
-            else {
-                throw error("Product with id " + this.id + " already exists")
-            }
+            const products = await this.recoverProducts()
+            const id = products.length > 0 ? products[products.length - 1].id : 0
+            const newId = id + 1
+            const newProduct = { ...product, id: newId }
+            products.push(newProduct)
+            await this.saveProducts(products)
+            return newId
         }
         catch(error) {
-            console.log('Error when trying to add product: ', error)
-        }
-        
-    }
-
-    async getProducts(){
-        try{
-            const data = await this.fs.readFile(this.path, 'utf-8')
-            return (JSON.parse(data))
-        }
-        catch(error){
-            console.log('Error when trying to read file: ', error)
+            throw new Error('There was an error when saving the product')
         }
     }
 
-    async getProductById(id){
+    async getById(id) {
         try {
-            const data = await this.fs.readFile(this.path, 'utf-8')
-            const product = JSON.parse(data).find((elem) => elem.id === id)
-            if(!product){
-                console.log("Product with id " + id + " doesn't exists")
-            } 
-            else {
-                return (product)
-            }
+            const products = await this.recoverProducts()
+            const product = products.find((elem) => elem.id === id)
+            return product || null
+        }
+        catch(error) {
+            throw new Error('There was an error when getting product with id ' + id)
+        }
+    }
+
+    async getAll() {
+        try {
+            const products = await this.recoverProducts()
+            return products
+        }
+        catch(error) {
+            throw new Error('There was an error when getting all products')
+        }
+    }
+
+    async deleteById(id) {
+        try {
+            let products = await this.recoverProducts()
+            products = products.filter((elem) => elem.id !== id)
+            await this.saveProducts(products)
+        }
+        catch(error) {
+            throw new Error('There was an error when deleting product with id ' + id)
+        }
+    }
+
+    async deleteAll() {
+        try {
+            await this.saveProducts([])
         }
         catch (error) {
-            console.log('Error when trying to read file: ', error)
+            throw new Error('There was an error when deleting all products')
         }
     }
 
-    async updateProduct(product){
+    async recoverProducts() {
         try {
-            const data = await this.fs.readFile(this.path, 'utf-8')
-            const array = JSON.parse(data).filter((elem) => elem.id !== product.id)
-            array.push(product)
-            await this.fs.writeFile(this.path, JSON.stringify(array))
+            const data = await fs.promises.readFile(this.file, 'utf-8')
+            return data ? JSON.parse(data) : []
         }
         catch (error) {
-            console.log('Error when trying to read file: ', error)
+            return []
         }
     }
 
-    async deleteProduct(id){
+    async saveProducts(products) {
         try {
-            const data = await this.fs.readFile(this.path, 'utf-8')
-            const newData = JSON.parse(data).filter((elem) => elem.id != id)
-            await this.fs.writeFile(this.path, JSON.stringify(newData))
-            console.log('Product with id ' + id + ' deleted')
+            await fs.promises.writeFile(this.file, JSON.stringify(products, null, 2))
+            
         }
         catch (error) {
-            console.log('Error when trying to read or write file: ', error)
+            throw new Error('Error when saving products...')
         }
-    }
-
-    isValid(product) {
-    if (product.title === null || product.title === undefined ||
-        product.price === null || product.price === undefined ||
-        product.code === null || product.code === undefined ||
-        product.stock === null || product.stock === undefined) {
-        return false
-    }
-    return true
     }
 }
 
+// Testing clase Contenedor
+const main = async () => {
+    const contenedor = new Contenedor('products.txt')
+
+    const newProduct = { title: 'Test product', price: 34000 }
+    const createdId = await contenedor.save(newProduct)
+    console.log('Product with id ' + createdId + ' saved')
+
+    const products = await contenedor.getAll()
+    console.log('List of products:', products)
+
+    // await contenedor.deleteById(1)
+
+    const id = 2
+    const product = await contenedor.getById(id)
+    console.log('Product with id ' + id + ':', product)
+
+    // await contenedor.deleteAll()
+}
+
+main().catch((error) => console.error(error))
 
 
-const product_manager = new ProductManager('products.json')
-/* product_manager.deleteProduct(5)
-    .then(() => {
-        console.log('Deleted product')
-    })
-    .catch((error) => {
-        console.log(error)
-    }) */
-const product = {
-    title: "Computer",
-    description: "Home computer",
-    price: 500999,
-    thumbnail: "../img/computer",
-    code: 32000,
-    stock: 6,
-}
-product_manager.addProduct(product)
-    .then(() => {
-        console.log('Added product')
-    })
-    .catch((error) => {
-        console.log(error)
-    })
-/*
-product_manager.getProducts()
-    .then((data)=> {
-        console.log('Products: ', data)
-    })
-    .catch((error)=> {
-        console.log(error)
-    })
-product_manager.getProductById(1)
-    .then((data)=> {
-        console.log('Product searched: ', data)
-    })
-    .catch((error)=> {
-        console.log(error)
-    }) */
-/* const updatedProduct = {
-    "title": "Lamp",
-    "description": "Beautiful lamp for living room",
-    "price": 125000,
-    "thumbnail": "../img/lamp",
-    "code": 32000,
-    "stock": 15,
-    "id": 3
-}
-product_manager.updateProduct(updatedProduct)
-    .then(() => {
-        console.log('Product updated: ', updatedProduct)
-    })
-    .catch((error) => {
-        console.log(error)
-    })  */
+
+
