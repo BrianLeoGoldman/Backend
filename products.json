@@ -1,0 +1,38 @@
+[
+    {
+        "title": "Sofa",
+        "description": "Fancy sofa for four people",
+        "price": 237888,
+        "thumbnail": "../img/sofa",
+        "code": 32000,
+        "stock": 7,
+        "id": 2
+    },
+    {
+        "title": "Sofa",
+        "description": "Fancy sofa for four people",
+        "price": 237888,
+        "thumbnail": "../img/sofa",
+        "code": 32000,
+        "stock": 7,
+        "id": 4
+    },
+    {
+        "title": "Sofa",
+        "description": "Fancy sofa for four people",
+        "price": 125000,
+        "thumbnail": "../img/new-sofa",
+        "code": 32000,
+        "stock": 15,
+        "id": 1
+    },
+    {
+        "title": "Lamp",
+        "description": "Beautiful lamp for living room",
+        "price": 125000,
+        "thumbnail": "../img/lamp",
+        "code": 32000,
+        "stock": 15,
+        "id": 3
+    }
+]

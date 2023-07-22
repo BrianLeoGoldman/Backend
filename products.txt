@@ -1,0 +1,17 @@
+[
+  {
+    "title": "Test product",
+    "price": 34000,
+    "id": 1
+  },
+  {
+    "title": "Test product",
+    "price": 34000,
+    "id": 2
+  },
+  {
+    "title": "Test product",
+    "price": 34000,
+    "id": 3
+  }
+]
