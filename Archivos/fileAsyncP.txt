@@ -1,0 +1,2 @@
+Este texto se agrego mediante el metodo writeFile con promises
+Y este texto se agrego mediante el metodo appendFile con promises
