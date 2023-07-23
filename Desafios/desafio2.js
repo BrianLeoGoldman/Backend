@@ -10,6 +10,10 @@ class Contenedor {
 
     async save(product) {
         try {
+            if (!this.isValid(product)) {
+                console.log("Product is not valid due to missing fields...")
+                return
+            }
             const products = await this.recoverProducts()
             const id = products.length > 0 ? products[products.length - 1].id : 0
             const newId = id + 1
@@ -82,6 +86,14 @@ class Contenedor {
         catch (error) {
             throw new Error('Error when saving products...')
         }
+    }
+
+    isValid(product) {
+        if (product.title === null || product.title === undefined ||
+            product.price === null || product.price === undefined) {
+            return false
+        }
+        return true
     }
 }
 

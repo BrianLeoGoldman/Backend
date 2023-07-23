@@ -1,0 +1,15 @@
+{
+  "contenidoStr": "{\r\n  \"name\": \"backend\",\r\n  \"version\": \"1.0.0\",\r\n  \"description\": \"Proyecto de Backend del curso de Coderhouse\",\r\n  \"main\": \"main.js\",\r\n  \"scripts\": {\r\n    \"test\": \"echo \\\"Error: no test specified\\\" && exit 1\"\r\n  },\r\n  \"author\": \"Brian Goldman\",\r\n  \"license\": \"ISC\"\r\n}\r\n",
+  "contenidoObj": {
+    "name": "backend",
+    "version": "1.0.0",
+    "description": "Proyecto de Backend del curso de Coderhouse",
+    "main": "main.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Brian Goldman",
+    "license": "ISC"
+  },
+  "size": "269 bytes"
+}
