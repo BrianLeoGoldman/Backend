@@ -1,9 +1,10 @@
 // Manejo de archivos en Javascript
 
-const fs = require('fs')
+// const fs = require('fs')
+import fs from 'fs' // This is because we added type: module in package.json
 
 // Implementacion clase Contenedor
-class Contenedor {
+export class Contenedor {
     constructor(file) {
         this.file = file
     }
@@ -108,16 +109,16 @@ const main = async () => {
     const products = await contenedor.getAll()
     console.log('List of products:', products)
 
-    // await contenedor.deleteById(1)
+    await contenedor.deleteById(1)
 
     const id = 2
     const product = await contenedor.getById(id)
     console.log('Product with id ' + id + ':', product)
 
-    // await contenedor.deleteAll()
+    await contenedor.deleteAll()
 }
 
-main().catch((error) => console.error(error))
+// main().catch((error) => console.error(error))
 
 
 
