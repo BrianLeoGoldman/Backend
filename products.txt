@@ -13,5 +13,35 @@
     "title": "Test product",
     "price": 34000,
     "id": 3
+  },
+  {
+    "title": "Test product",
+    "price": 34000,
+    "id": 4
+  },
+  {
+    "title": "Test product",
+    "price": 34000,
+    "id": 5
+  },
+  {
+    "title": "Test product",
+    "price": 34000,
+    "id": 6
+  },
+  {
+    "title": "Test product",
+    "price": 34000,
+    "id": 7
+  },
+  {
+    "title": "Test product",
+    "price": 34000,
+    "id": 8
+  },
+  {
+    "title": "Test product",
+    "price": 34000,
+    "id": 9
   }
 ]
