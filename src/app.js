@@ -4,11 +4,14 @@ const productsRouter = require("./routes/products.router.js")
 const app = express()
 const PORT = 8080
 
+// MIDDLEWARES
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use("/", productsRouter)
 
 app.get("/", (req, res) => {
     console.log("We are in app.js")
-    res.send("We are in app.js")
+    res.status(200).send("We are in app.js")
 })
 
 const server = app.listen(PORT, () => {

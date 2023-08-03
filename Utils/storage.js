@@ -1,11 +1,6 @@
-// Manejo de archivos en Javascript
-
 const fs = require('fs')
-// import fs from 'fs' 
-// It is 'import' if we add type: module in package.json
 
-// Implementacion clase Contenedor
-class Contenedor {
+class Storage {
     constructor(file) {
         this.file = file
     }
@@ -13,8 +8,7 @@ class Contenedor {
     async save(product) {
         try {
             if (!this.isValid(product)) {
-                console.log("Product is not valid due to missing fields...")
-                return
+                throw new Error('Product is not valid due to missing or invalid fields')
             }
             const products = await this.recoverProducts()
             const id = products.length > 0 ? products[products.length - 1].id : 0
@@ -24,8 +18,9 @@ class Contenedor {
             await this.saveProducts(products)
             return newId
         }
-        catch(error) {
-            throw new Error('There was an error when saving the product')
+        catch (error) {
+            console.log(`${error}`)
+            throw error
         }
     }
 
@@ -35,7 +30,7 @@ class Contenedor {
             const product = products.find((elem) => elem.id === id)
             return product || null
         }
-        catch(error) {
+        catch (error) {
             throw new Error('There was an error when getting product with id ' + id)
         }
     }
@@ -45,7 +40,7 @@ class Contenedor {
             const products = await this.recoverProducts()
             return products
         }
-        catch(error) {
+        catch (error) {
             throw new Error('There was an error when getting all products')
         }
     }
@@ -56,7 +51,7 @@ class Contenedor {
             products = products.filter((elem) => elem.id !== id)
             await this.saveProducts(products)
         }
-        catch(error) {
+        catch (error) {
             throw new Error('There was an error when deleting product with id ' + id)
         }
     }
@@ -83,7 +78,7 @@ class Contenedor {
     async saveProducts(products) {
         try {
             await fs.promises.writeFile(this.file, JSON.stringify(products, null, 2))
-            
+
         }
         catch (error) {
             throw new Error('Error when saving products...')
@@ -99,26 +94,7 @@ class Contenedor {
     }
 }
 
-// Testing clase Contenedor
-const main = async () => {
-    const contenedor = new Contenedor('products.txt')
+module.exports = Storage
 
-    const newProduct = { title: 'Test product', price: 34000 }
-    const createdId = await contenedor.save(newProduct)
-    console.log('Product with id ' + createdId + ' saved')
 
-    const products = await contenedor.getAll()
-    console.log('List of products:', products)
 
-    await contenedor.deleteById(1)
-
-    const id = 2
-    const product = await contenedor.getById(id)
-    console.log('Product with id ' + id + ':', product)
-
-    await contenedor.deleteAll()
-}
-
-// main().catch((error) => console.error(error))
-
-module.exports = Contenedor

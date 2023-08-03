@@ -1,47 +1,58 @@
 [
-    {
-        "title": "Chair",
-        "description": "Wooden chair",
-        "price": 12000,
-        "thumbnail": "../img/chair",
-        "code": 12990,
-        "stock": 20,
-        "id": 2
-    },
-    {
-        "title": "Sofa",
-        "description": "Fancy sofa for four people",
-        "price": 237888,
-        "thumbnail": "../img/sofa",
-        "code": 32000,
-        "stock": 7,
-        "id": 4
-    },
-    {
-        "title": "Television",
-        "description": "HD television",
-        "price": 300500,
-        "thumbnail": "../img/television",
-        "code": 10008,
-        "stock": 10,
-        "id": 1
-    },
-    {
-        "title": "Lamp",
-        "description": "Beautiful lamp for living room",
-        "price": 27000,
-        "thumbnail": "../img/lamp",
-        "code": 32001,
-        "stock": 30,
-        "id": 3
-    },
-    {
-        "title": "Computer",
-        "description": "Home computer",
-        "price": 500999,
-        "thumbnail": "../img/computer",
-        "code": 32000,
-        "stock": 6,
-        "id": 5
-    }
+  {
+    "title": "Chair",
+    "description": "Wooden chair",
+    "price": 12000,
+    "thumbnail": "../img/chair",
+    "code": 12990,
+    "stock": 20,
+    "id": 2
+  },
+  {
+    "title": "Sofa",
+    "description": "Fancy sofa for four people",
+    "price": 237888,
+    "thumbnail": "../img/sofa",
+    "code": 32000,
+    "stock": 7,
+    "id": 4
+  },
+  {
+    "title": "Television",
+    "description": "HD television",
+    "price": 300500,
+    "thumbnail": "../img/television",
+    "code": 10008,
+    "stock": 10,
+    "id": 1
+  },
+  {
+    "title": "Lamp",
+    "description": "Beautiful lamp for living room",
+    "price": 27000,
+    "thumbnail": "../img/lamp",
+    "code": 32001,
+    "stock": 30,
+    "id": 3
+  },
+  {
+    "title": "Computer",
+    "description": "Home computer",
+    "price": 500999,
+    "thumbnail": "../img/computer",
+    "code": 32000,
+    "stock": 6,
+    "id": 5
+  },
+  {
+    "title": "Smartphone",
+    "description": "Samsung smartphone with great camera",
+    "code": "20988",
+    "price": "230000",
+    "status": "true",
+    "stock": "15",
+    "category": "phones",
+    "thumbnails": "['./photo1', './photo2', './photo3']",
+    "id": 6
+  }
 ]
