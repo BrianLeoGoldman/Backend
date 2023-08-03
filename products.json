@@ -43,16 +43,5 @@
     "code": 32000,
     "stock": 6,
     "id": 5
-  },
-  {
-    "title": "Smartphone",
-    "description": "Samsung smartphone with great camera",
-    "code": "20988",
-    "price": "230000",
-    "status": "true",
-    "stock": "15",
-    "category": "phones",
-    "thumbnails": "['./photo1', './photo2', './photo3']",
-    "id": 6
   }
 ]

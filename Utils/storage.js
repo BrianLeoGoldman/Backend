@@ -24,6 +24,17 @@ class Storage {
         }
     }
 
+    async update(id, product) {
+        try {
+            const products = await this.recoverProducts()
+            const updatedProducts = products.map((elem) => elem.id === id ? { ...product, id: id } : elem)
+            await this.saveProducts(updatedProducts)
+        }
+        catch (error) {
+            throw new Error('There was an error when updating product with id ' + id)
+        }
+    }
+
     async getById(id) {
         try {
             const products = await this.recoverProducts()

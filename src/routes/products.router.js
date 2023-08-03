@@ -56,8 +56,29 @@ router.post("/api/products", (req, res) => {
         })
 })
 
-router.put("api/products/:pid", (req, res) => {
+router.put("/api/products/:pid", (req, res) => {
+    const pid = parseInt(req.params.pid)
+    const product = req.body
+    console.log(`Product with id ${pid} to be updated`)
+    storage.update(pid, product)
+        .then((response) => {
+            res.status(200).send(response)
+        })
+        .catch((error) => {
+            res.status(500).send(`${error}`)
+        })
+})
 
+router.delete("/api/products/:pid", (req, res) => {
+    const pid = parseInt(req.params.pid)
+    console.log(`Product with id ${pid} to be deleted`)
+    storage.deleteById(pid)
+        .then((response) => {
+            res.status(200).send(response)
+        })
+        .catch((error) => {
+            res.status(500).send(`${error}`)
+        })
 })
 
 module.exports = router
