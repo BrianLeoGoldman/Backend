@@ -1,16 +1,16 @@
 // Motores de plantillas
 
-const express = require('express') 
+const express = require('express')
 const path = require('path')
 const handlebars = require('express-handlebars')
 const viewsRouter = require('../src/routes/views.router')
-const app = express() 
+const app = express()
 const PORT = 8080
 
 app.engine("handlebars", handlebars.engine()) // Configuracion del motor de plantillas
 app.set("views", __dirname + "/views") // Donde encontrar las views
 app.set("view engine", "handlebars")
-app.use(express.static(__dirname, "views"))
+//app.use(express.static(__dirname, "views"))
 
 /* const users = [
     {
