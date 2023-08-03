@@ -2,8 +2,8 @@
 
 const express = require('express')
 const path = require('path')
-const usersRouter = require("./routes/users.js")
-const petsRouter = require("./routes/pets.js")
+const usersRouter = require("./routes/users.router.js")
+const petsRouter = require("./routes/pets.router.js")
 const url = require('url');
 const multer = require('multer')
 
