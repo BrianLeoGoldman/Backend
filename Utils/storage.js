@@ -7,20 +7,22 @@ class Storage {
 
     async save(product) {
         try {
-            if (!this.isValid(product)) {
-                throw new Error('Product is not valid due to missing or invalid fields')
-            }
             const products = await this.recoverProducts()
             const id = products.length > 0 ? products[products.length - 1].id : 0
             const newId = id + 1
-            const newProduct = { ...product, id: newId }
+            let newProduct
+            if (Array.isArray(product)) {
+                newProduct = { products: product, id: newId }
+            }
+            else {
+                newProduct = { ...product, id: newId }
+            }
             products.push(newProduct)
             await this.saveProducts(products)
             return newId
         }
         catch (error) {
-            console.log(`${error}`)
-            throw error
+            throw new Error('There was an error when saving product')
         }
     }
 
@@ -32,6 +34,18 @@ class Storage {
         }
         catch (error) {
             throw new Error('There was an error when updating product with id ' + id)
+        }
+    }
+
+    async updateCart(cart) {
+        try {
+            console.log("Lets go")
+            const carts = await this.recoverProducts()
+            const updatedCarts = carts.map((elem) => elem.id === cart.id ? cart : elem)
+            await this.saveProducts(updatedCarts)
+        }
+        catch (error) {
+            throw new Error('There was an error when updating cart with id ' + cart.id)
         }
     }
 
@@ -92,16 +106,8 @@ class Storage {
 
         }
         catch (error) {
-            throw new Error('Error when saving products...')
+            throw new Error('There was an error when writing on file')
         }
-    }
-
-    isValid(product) {
-        if (product.title === null || product.title === undefined ||
-            product.price === null || product.price === undefined) {
-            return false
-        }
-        return true
     }
 }
 

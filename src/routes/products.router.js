@@ -1,5 +1,4 @@
 const express = require('express')
-const fs = require('fs')
 const Storage = require('../../Utils/storage.js')
 
 const router = express.Router()
@@ -49,7 +48,7 @@ router.post("/api/products", (req, res) => {
     console.log(`Product with title ${product.title} to be added`)
     storage.save(product)
         .then((response) => {
-            res.status(200).send(response)
+            res.status(200).send(`Product with id ${response} added`)
         })
         .catch((error) => {
             res.status(500).send(`${error}`)
