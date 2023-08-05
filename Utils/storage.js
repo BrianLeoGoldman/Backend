@@ -1,31 +1,51 @@
-// Manejo de archivos en Javascript
-
 const fs = require('fs')
-// import fs from 'fs' 
-// It is 'import' if we add type: module in package.json
 
-// Implementacion clase Contenedor
-class Contenedor {
+class Storage {
     constructor(file) {
         this.file = file
     }
 
     async save(product) {
         try {
-            if (!this.isValid(product)) {
-                console.log("Product is not valid due to missing fields...")
-                return
-            }
             const products = await this.recoverProducts()
             const id = products.length > 0 ? products[products.length - 1].id : 0
             const newId = id + 1
-            const newProduct = { ...product, id: newId }
+            let newProduct
+            if (Array.isArray(product)) {
+                newProduct = { products: product, id: newId }
+            }
+            else {
+                newProduct = { ...product, id: newId }
+            }
             products.push(newProduct)
             await this.saveProducts(products)
             return newId
         }
-        catch(error) {
-            throw new Error('There was an error when saving the product')
+        catch (error) {
+            throw new Error('There was an error when saving product')
+        }
+    }
+
+    async update(id, product) {
+        try {
+            const products = await this.recoverProducts()
+            const updatedProducts = products.map((elem) => elem.id === id ? { ...product, id: id } : elem)
+            await this.saveProducts(updatedProducts)
+        }
+        catch (error) {
+            throw new Error('There was an error when updating product with id ' + id)
+        }
+    }
+
+    async updateCart(cart) {
+        try {
+            console.log("Lets go")
+            const carts = await this.recoverProducts()
+            const updatedCarts = carts.map((elem) => elem.id === cart.id ? cart : elem)
+            await this.saveProducts(updatedCarts)
+        }
+        catch (error) {
+            throw new Error('There was an error when updating cart with id ' + cart.id)
         }
     }
 
@@ -35,7 +55,7 @@ class Contenedor {
             const product = products.find((elem) => elem.id === id)
             return product || null
         }
-        catch(error) {
+        catch (error) {
             throw new Error('There was an error when getting product with id ' + id)
         }
     }
@@ -45,7 +65,7 @@ class Contenedor {
             const products = await this.recoverProducts()
             return products
         }
-        catch(error) {
+        catch (error) {
             throw new Error('There was an error when getting all products')
         }
     }
@@ -56,7 +76,7 @@ class Contenedor {
             products = products.filter((elem) => elem.id !== id)
             await this.saveProducts(products)
         }
-        catch(error) {
+        catch (error) {
             throw new Error('There was an error when deleting product with id ' + id)
         }
     }
@@ -83,42 +103,15 @@ class Contenedor {
     async saveProducts(products) {
         try {
             await fs.promises.writeFile(this.file, JSON.stringify(products, null, 2))
-            
+
         }
         catch (error) {
-            throw new Error('Error when saving products...')
+            throw new Error('There was an error when writing on file')
         }
-    }
-
-    isValid(product) {
-        if (product.title === null || product.title === undefined ||
-            product.price === null || product.price === undefined) {
-            return false
-        }
-        return true
     }
 }
 
-// Testing clase Contenedor
-const main = async () => {
-    const contenedor = new Contenedor('products.txt')
+module.exports = Storage
 
-    const newProduct = { title: 'Test product', price: 34000 }
-    const createdId = await contenedor.save(newProduct)
-    console.log('Product with id ' + createdId + ' saved')
 
-    const products = await contenedor.getAll()
-    console.log('List of products:', products)
 
-    await contenedor.deleteById(1)
-
-    const id = 2
-    const product = await contenedor.getById(id)
-    console.log('Product with id ' + id + ':', product)
-
-    await contenedor.deleteAll()
-}
-
-// main().catch((error) => console.error(error))
-
-module.exports = Contenedor
