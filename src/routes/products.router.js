@@ -13,6 +13,18 @@ router.use((req, res, next) => {
 })
 
 // Endpoints
+
+router.get("/", (req, res) => {
+    console.log("This is the home page")
+    storage.getAll()
+        .then((response) => {
+            res.render('home.handlebars', { products: response })
+        })
+        .catch(error => {
+            res.status(500).send(error)
+        })
+})
+
 router.get("/api/products", (req, res) => {
     const limit = parseInt(req.query.limit)
     console.log("All products have been requested")

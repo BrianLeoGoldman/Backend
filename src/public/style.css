@@ -1,0 +1,50 @@
+.home {
+    margin: 0 auto;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.home .products-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow-x: auto;
+}
+.home .products-list .product-card {
+    background-color: #eed9c4;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 250px;
+    height: 300px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.home .products-list .product-card .product-title {
+    color: blue;
+    font-size: 2rem;
+    font-weight: 900;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.home .products-list .product-card .product-info {
+    color: rgb(206, 25, 25);
+    font-size: 1.3rem;
+    font-weight: 300;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-style: oblique;  
+    text-align: center; 
+    padding-left: 10px;
+    padding-right: 10px;
+}

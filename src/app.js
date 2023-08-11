@@ -25,10 +25,11 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use("/", productsRouter)
 app.use("/", cartRouter)
 
-app.get("/", (req, res) => {
+/* app.get("/", (req, res) => {
     console.log("We are in app.js")
     res.status(200).send("We are in app.js")
-})
+    // res.render('home.handlebars')
+}) */
 
 const server = app.listen(PORT, () => {
     console.log(`Servidor HTTP escuchando en el puerto ${server.address().port}`)
