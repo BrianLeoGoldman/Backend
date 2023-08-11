@@ -43,7 +43,7 @@ app.post("/uploads", upload.single("archivo"), (req, res) => {
 })
 
 app.get("/", (req, res) => {
-    res.sendFile(__dirname + "../public", "index.html")
+    res.sendFile(__dirname + "../public", "index-clase8.html")
 })
 
 app.listen(PORT, () => {

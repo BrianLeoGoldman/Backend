@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Aplicacion de Socket IO</h1>
+
+    <h2>Introduce texto y sera enviado al servidor:</h2>
+    <input type="text" id="message" placeholder="Write a message">
+    <button onclick="sendMessage()">Send</button>
+
+    <h2>Introduce texto y sera agregado a un array de mensajes:</h2>
+    <input type="text" id="array-input" placeholder="Write a message">
+    <button onclick="sendArrayMessage()">Send</button>
+
+    {{#each array}}
+
+    <div>
+        <p>{{this.id}}</p>
+        <p>{{this.message}}</p>
+    </div>
+
+    {{/each}}
+
+    {{#each food}}
+
+    <div>
+        <p>{{this.name}}</p>
+        <p>{{this.price}}</p>
+    </div>
+
+    {{/each}}
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        // Client socket instantiation
+        const socket = io()
+
+        let array = []
+
+        function sendMessage() {
+            const message = document.getElementById('message').value
+            socket.emit('message', message)
+        }
+
+        function sendArrayMessage() {
+            const message = document.getElementById('array-input').value
+            socket.emit('array-input', message)
+        }
+
+        // Listens to 'message' event from the server
+        socket.on('message', (data) => {
+            console.log('Message received from the server: ', data)
+        })
+
+        socket.on('array-update', (data) => {
+            array = data
+        })
+    </script>
+
+</body>
+
+</html>
