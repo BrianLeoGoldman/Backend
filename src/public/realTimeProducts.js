@@ -10,16 +10,24 @@ socket.on('error', (data) => {
     }) */
 })
 
-socket.on('products-update', (data) => {
-    // Obtener el template Handlebars
+socket.on('products-updated', (data) => {
     const productsList = document.getElementById('products-list');
     const template = Handlebars.compile(productsList.innerHTML);
-
-    // Renderizar el nuevo contenido HTML usando Handlebars
-    const newHtml = template({ products: data.products });
-
-    // Actualizar el contenido de la lista de productos
+    const newHtml = template({ products: data.products }); 
     productsList.innerHTML = newHtml;
+})
+
+socket.on('product-added', (data) => {
+    const productsList = document.getElementById('products-list');
+    const newProduct = document.createElement('div')
+    newProduct.innerHTML = `<div class="product-card">
+                <p class="product-title">${data.title}</p>
+                <p class="product-info">${data.description}</p>
+                <p class="product-info">${ data.price }</p>
+                <p class="product-info">CODE: ${data.code}</p>
+                <button class="product-delete" onclick="deleteProduct(${data.id})"><i class="fa fa-trash-o"></i></button>
+            </div>`
+    productsList.appendChild(newProduct)
 })
 
 function deleteProduct(id) {

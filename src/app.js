@@ -33,12 +33,11 @@ io.on('connection', (socket) => {
     console.log("A new connection has been established")
 
     socket.on('delete-product', (productId) => {
-        console.log('The id of the product to remove is: ' + productId)
         storage.deleteById(productId)
             .then(() => {
                 storage.getAll()
                     .then((response) => {
-                        io.emit('products-update', { products: response })
+                        io.emit('products-updated', { products: response })
                     })
                     .catch((error) => {
                         io.emit('error', error)
@@ -52,13 +51,7 @@ io.on('connection', (socket) => {
     socket.on('add-product', (product) => {
         storage.save(product)
             .then(() => {
-                storage.getAll()
-                    .then((response) => {
-                        io.emit('products-update', { products: response })
-                    })
-                    .catch((error) => {
-                        io.emit('error', error)
-                    })
+                io.emit('product-added', product )
             })
             .catch((error) => {
                 io.emit('error', error)
