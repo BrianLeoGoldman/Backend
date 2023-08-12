@@ -62,82 +62,78 @@
     "thumbnail": "../img/mouse",
     "code": 12345,
     "stock": 6,
-    "id": 7
-  },
-  {
-    "title": "Mouse",
-    "description": "Mouse for computer",
-    "price": 20000,
-    "thumbnail": "../img/mouse",
-    "code": 12345,
-    "stock": 6,
-    "id": 8
-  },
-  {
-    "title": "Mouse",
-    "description": "Mouse for computer",
-    "price": 20000,
-    "thumbnail": "../img/mouse",
-    "code": 12345,
-    "stock": 6,
-    "id": 9
-  },
-  {
-    "title": "Smartphone",
-    "description": "Samsung smartphone with great camera",
-    "code": "20988",
-    "price": "230000",
-    "status": "true",
-    "stock": "15",
-    "category": "phones",
-    "thumbnails": "['./photo1', './photo2', './photo3']",
-    "id": 10
-  },
-  {
-    "title": "Smartphone",
-    "description": "Samsung smartphone with great camera",
-    "code": "20988",
-    "price": "230000",
-    "status": "true",
-    "stock": "15",
-    "category": "phones",
-    "thumbnails": "['./photo1', './photo2', './photo3']",
-    "id": 11
-  },
-  {
-    "title": "Mouse",
-    "description": "Mouse for computer",
-    "price": 20000,
-    "thumbnail": "../img/mouse",
-    "code": 12345,
-    "stock": 6,
-    "id": 12
-  },
-  {
-    "title": "Mouse",
-    "description": "Mouse for computer",
-    "price": 20000,
-    "thumbnail": "../img/mouse",
-    "code": 12345,
-    "stock": 6,
     "id": 13
   },
   {
-    "title": "Cup",
-    "description": "Coffee cup",
-    "price": 20000,
-    "thumbnail": "../img/cup",
-    "code": 12345,
-    "stock": 6,
-    "id": 14
+    "title": "Microwave",
+    "description": "Device for heating food",
+    "price": "90000",
+    "thumbnail": "./microwave.jpg",
+    "code": "788",
+    "stock": "23",
+    "id": 16
   },
   {
-    "title": "Cup",
-    "description": "Coffee cup",
-    "price": 20000,
-    "thumbnail": "../img/cup",
-    "code": 12345,
-    "stock": 6,
-    "id": 15
+    "title": "VR glasses",
+    "description": "Glasses for playing VR games",
+    "price": "190000",
+    "thumbnail": "./vr-glasses.jpg",
+    "code": "455",
+    "stock": "13",
+    "id": 17
+  },
+  {
+    "title": "Keyboard",
+    "description": "Basic keyboard for a PC",
+    "price": "50000",
+    "thumbnail": "./keyboard.jpg",
+    "code": "22",
+    "stock": "34",
+    "id": 18
+  },
+  {
+    "title": "Electric car",
+    "description": "Car with electric energy",
+    "price": "1300000",
+    "thumbnail": "./car.jpg",
+    "code": "509",
+    "stock": "5",
+    "id": 19
+  },
+  {
+    "title": "Phone",
+    "description": "House phone",
+    "price": "49000",
+    "thumbnail": "./phone.jpg",
+    "code": "655",
+    "stock": "20",
+    "id": 20
+  },
+  {
+    "title": "E-book",
+    "description": "Book for reading digital books",
+    "price": "45000",
+    "thumbnail": "./ebook.jpg",
+    "code": "334",
+    "stock": "40",
+    "id": 21
+  },
+  {
+    "title": "Gamer mouse",
+    "description": "Mouse for gamers",
+    "price": "70000",
+    "thumbnail": "./gamer-mouse.jpg",
+    "code": "856",
+    "stock": "15",
+    "id": 23
+  },
+  {
+    "title": "Smartwatch",
+    "description": "Digital watch resistant to water",
+    "price": "60000",
+    "thumbnail": "./smartwatch.jpg",
+    "code": "975",
+    "stock": "20",
+    "id": 24
   }
 ]
