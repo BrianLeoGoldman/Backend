@@ -3,7 +3,7 @@
 const express = require('express')
 const path = require('path')
 const handlebars = require('express-handlebars')
-const viewsRouter = require('../src/routes/views.router')
+const clase9Router = require('../src/routes/clase9.router')
 const app = express()
 const PORT = 8080
 
@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
     res.render("index", randomUser)
 }) */
 
-app.use("/", viewsRouter)
+app.use("/", clase9Router)
 
 const server = app.listen(PORT, () => {
     console.log(`Servidor HTTP escuchando en el puerto ${server.address().port}`)

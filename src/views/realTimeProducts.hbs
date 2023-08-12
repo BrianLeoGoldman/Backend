@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Real Time Products</title>
+</head>
+
+<body>
+    <div class="home">
+        <h2>Checkout our products in real time!</h2>
+        <form class="products-forms" id="products-form">
+            <div class="labels-inputs">
+                <div class="labels">
+                    <label for="title" class="label">Title</label>
+                    <label for="description" class="label">Description</label>
+                    <label for="price" class="label">Price</label>
+                    <label for="thumbnail" class="label">Thumbnail</label>
+                    <label for="code" class="label">Code</label>
+                    <label for="stock" class="label">Stock</label>
+                </div>
+                <div class="inputs">
+                    <input type="text" id="title" class="input" required>
+                    <input type="text" id="description" class="input" required>
+                    <input type="number" id="price" class="input" required>
+                    <input type="text" id="thumbnail" class="input">
+                    <input type="number" id="code" class="input" required>
+                    <input type="number" id="stock" class="input" required>
+                </div>
+            </div>
+            <button type="submit" class="add-button">Add</button>
+        </form>
+        <div class="products-list" id="products-list">
+            {{#each products}}
+            <div class="product-card">
+                <p class="product-title">{{this.title}}</p>
+                <p class="product-info">{{this.description}}</p>
+                <p class="product-info">${{this.price}}</p>
+                <p class="product-info">CODE: {{this.code}}</p>
+                <button class="product-delete" onclick="deleteProduct({{this.id}})"><i class="fa fa-trash-o"></i></button>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="realTimeProducts.js"></script>
+</body>
+
+</html>

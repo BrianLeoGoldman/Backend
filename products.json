@@ -80,46 +80,6 @@
     "thumbnail": "../img/mouse",
     "code": 12345,
     "stock": 6,
-    "id": 9
-  },
-  {
-    "title": "Smartphone",
-    "description": "Samsung smartphone with great camera",
-    "code": "20988",
-    "price": "230000",
-    "status": "true",
-    "stock": "15",
-    "category": "phones",
-    "thumbnails": "['./photo1', './photo2', './photo3']",
-    "id": 10
-  },
-  {
-    "title": "Smartphone",
-    "description": "Samsung smartphone with great camera",
-    "code": "20988",
-    "price": "230000",
-    "status": "true",
-    "stock": "15",
-    "category": "phones",
-    "thumbnails": "['./photo1', './photo2', './photo3']",
-    "id": 11
-  },
-  {
-    "title": "Mouse",
-    "description": "Mouse for computer",
-    "price": 20000,
-    "thumbnail": "../img/mouse",
-    "code": 12345,
-    "stock": 6,
-    "id": 12
-  },
-  {
-    "title": "Mouse",
-    "description": "Mouse for computer",
-    "price": 20000,
-    "thumbnail": "../img/mouse",
-    "code": 12345,
-    "stock": 6,
     "id": 13
   },
   {

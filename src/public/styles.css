@@ -1,0 +1,116 @@
+.home {
+    margin: 0 auto;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.home .products-forms {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+}
+
+.home .products-forms .labels-inputs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+}
+
+.home .products-forms .labels-inputs .labels {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+}
+
+.home .products-forms .labels-inputs .labels .label {
+    color: blue;
+    font-size: 1rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    margin: 8px;
+}
+
+.home .products-forms .labels-inputs .inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+}
+
+.home .products-forms .labels-inputs .inputs .input {
+    color: black;
+    font-size: 1rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    margin: 5px;
+}
+
+.home .products-forms .add-button {
+    font-size: 24px;
+    border-radius: 15px;
+    background-color: blueviolet;
+    color: white;
+    cursor: pointer;
+}
+
+.home .products-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow-x: auto;
+}
+.home .products-list .product-card {
+    background-color: #eed9c4;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 250px;
+    height: 300px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 5px;
+    overflow-y: auto;
+}
+
+.home .products-list .product-card .product-title {
+    color: blue;
+    font-size: 1.8rem;
+    font-weight: 900;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.home .products-list .product-card .product-info {
+    color: rgb(206, 25, 25);
+    font-size: 1rem;
+    font-weight: 300;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-style: oblique;  
+    text-align: center; 
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.home .products-list .product-card .product-delete {
+    font-size: 24px;
+    border-radius: 15px;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+}
