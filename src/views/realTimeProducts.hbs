@@ -34,7 +34,7 @@
         </form>
         <div class="products-list" id="products-list">
             {{#each products}}
-            <div class="product-card">
+            <div class="product-card" id="{{this.id}}">
                 <p class="product-title">{{this.title}}</p>
                 <p class="product-info">{{this.description}}</p>
                 <p class="product-info">${{this.price}}</p>

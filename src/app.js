@@ -35,13 +35,7 @@ io.on('connection', (socket) => {
     socket.on('delete-product', (productId) => {
         storage.deleteById(productId)
             .then(() => {
-                storage.getAll()
-                    .then((response) => {
-                        io.emit('products-updated', { products: response })
-                    })
-                    .catch((error) => {
-                        io.emit('error', error)
-                    })
+                io.emit('product-deleted', productId)
             })
             .catch((error) => {
                 io.emit('error', error)
@@ -50,8 +44,8 @@ io.on('connection', (socket) => {
 
     socket.on('add-product', (product) => {
         storage.save(product)
-            .then(() => {
-                io.emit('product-added', product )
+            .then((id) => {
+                io.emit('product-added', {...product, id: id} )
             })
             .catch((error) => {
                 io.emit('error', error)
