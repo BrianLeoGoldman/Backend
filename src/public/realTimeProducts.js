@@ -10,24 +10,27 @@ socket.on('error', (data) => {
     }) */
 })
 
-socket.on('products-updated', (data) => {
-    const productsList = document.getElementById('products-list');
-    const template = Handlebars.compile(productsList.innerHTML);
-    const newHtml = template({ products: data.products }); 
-    productsList.innerHTML = newHtml;
+socket.on('product-deleted', (id) => {
+    const productsList = document.getElementById('products-list')
+    const newId = id.toString()
+    const child = document.getElementById(newId)
+    console.log(productsList)
+    console.log(newId)
+    console.log(child)
+    productsList.removeChild(child)
 })
 
 socket.on('product-added', (data) => {
     const productsList = document.getElementById('products-list');
     const newProduct = document.createElement('div')
-    newProduct.innerHTML = `<div class="product-card">
+    newProduct.innerHTML = `<div class="product-card" id="${data.id}">
                 <p class="product-title">${data.title}</p>
                 <p class="product-info">${data.description}</p>
                 <p class="product-info">${ data.price }</p>
                 <p class="product-info">CODE: ${data.code}</p>
                 <button class="product-delete" onclick="deleteProduct(${data.id})"><i class="fa fa-trash-o"></i></button>
             </div>`
-    productsList.appendChild(newProduct)
+    productsList.appendChild(newProduct.firstChild)
 })
 
 function deleteProduct(id) {
