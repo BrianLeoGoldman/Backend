@@ -9,7 +9,6 @@ class Storage {
             const price = product.price
             const stock = product.stock
             let result = await productModel.create({name, category, price, stock})
-            console.log(result)
             return result
         }
         catch (error) {
