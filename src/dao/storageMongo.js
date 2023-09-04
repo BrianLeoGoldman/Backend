@@ -1,14 +1,19 @@
-const productModel = require('./models/products.model.js')
+const { productModel } = require('./models/products.model.js')
 
 class Storage {
 
     async save(product) {
         try {
-            let result = await productModel.create(product)
+            const name = product.name
+            const category = product.category
+            const price = product.price
+            const stock = product.stock
+            let result = await productModel.create({name, category, price, stock})
+            console.log(result)
             return result
         }
         catch (error) {
-            throw new Error('There was an error when saving product')
+            throw new Error('There was an error when saving product ' + error)
         }
     }
 
@@ -20,6 +25,10 @@ class Storage {
         catch (error) {
             throw new Error('There was an error when updating product with id ' + id)
         }
+    }
+
+    async updateCart(cart) {
+        // COMPLETE
     }
 
     async getById(id) {
