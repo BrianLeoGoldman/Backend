@@ -30,7 +30,7 @@ router.post("/api/usersMongo", (req, res) => {
     console.log(`User with name ${user.firstname} to be added`)
     storage.save(user)
         .then((response) => {
-            res.status(200).send(`User with id ${response._id} added`)
+            res.status(200).send(response)
         })
         .catch((error) => {
             res.status(500).send(`${error}`)
@@ -45,7 +45,18 @@ router.put("/api/usersMongo/:id", (req, res) => {
     }
     storage.update(id, userToReplace)
         .then((response) => {
-            res.status(200).send(`User with id ${id} updated`)
+            res.status(200).send(response)
+        })
+        .catch((error) => {
+            res.status(500).send(`${error}`)
+        })
+})
+
+router.delete("/api/usersMongo/:id", (req, res) => {
+    let { id } = req.params
+    storage.deleteById(id)
+        .then((response) => {
+            res.status(200).send(response)
         })
         .catch((error) => {
             res.status(500).send(`${error}`)

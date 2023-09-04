@@ -30,7 +30,7 @@ router.post("/api/productsMongo", (req, res) => {
     console.log(`Product with name ${product.name} to be added`)
     storage.save(product)
         .then((response) => {
-            res.status(200).send(`Product with id ${response._id} added`)
+            res.status(200).send(response)
         })
         .catch((error) => {
             res.status(500).send(`${error}`)
@@ -45,12 +45,24 @@ router.put("/api/productsMongo/:id", (req, res) => {
     }
     storage.update(id, productToReplace)
         .then((response) => {
-            res.status(200).send(`Product with id ${id} updated`)
+            res.status(200).send(response)
         })
         .catch((error) => {
             res.status(500).send(`${error}`)
         })
 })
+
+router.delete("/api/productsMongo/:id", (req, res) => {
+    let { id } = req.params
+    storage.deleteById(id)
+        .then((response) => {
+            res.status(200).send(response)
+        })
+        .catch((error) => {
+            res.status(500).send(`${error}`)
+        })
+})
+
 
 
 module.exports = router
