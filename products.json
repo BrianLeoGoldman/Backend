@@ -135,5 +135,14 @@
     "code": "975",
     "stock": "20",
     "id": 24
+  },
+  {
+    "title": "Book",
+    "description": "A nice elegant book",
+    "price": "3000",
+    "thumbnail": "./book.jpg",
+    "code": "2132",
+    "stock": "10",
+    "id": 25
   }
 ]
