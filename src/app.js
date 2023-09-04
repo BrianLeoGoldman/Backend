@@ -1,4 +1,5 @@
 const express = require('express')
+const mongoose = require('mongoose')
 const http = require('http')
 const path = require('path')
 const handlebars = require('express-handlebars')
@@ -19,6 +20,15 @@ app.engine('handlebars', handlebars.engine())
 // SERVER SETTINGS
 app.set('views', __dirname + '/views') 
 app.set('view engine', 'handlebars') 
+
+// MONGO ATLAS CONNECTION
+mongoose.connect('mongodb+srv://leonel89011:NH1FG7njdGNQ0xII@cluster0.f4euppj.mongodb.net/?retryWrites=true&w=majority')
+    .then(() => {
+        console.log('Connection to Mongo Atlas database established')
+    })
+    .catch((error) => {
+        console.log('Error when connecting to Mongo Atlas database: ' + error)
+    })
 
 // MIDDLEWARES
 app.use(express.json())
