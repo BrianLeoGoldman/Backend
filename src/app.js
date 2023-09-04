@@ -7,7 +7,7 @@ const socketIo = require('socket.io')
 const productsRouter = require("./routes/products.router.js")
 const cartRouter = require("./routes/carts.router.js")
 const viewsRouter = require("./routes/views.router.js")
-const Storage = require('../Utils/storage.js')
+const Storage = require('./dao/storageFS.js')
 const storage = new Storage('products.json')
 const app = express()
 const httpServer = http.createServer(app)
@@ -18,8 +18,8 @@ const PORT = 8080
 app.engine('handlebars', handlebars.engine())
 
 // SERVER SETTINGS
-app.set('views', __dirname + '/views') 
-app.set('view engine', 'handlebars') 
+app.set('views', __dirname + '/views')
+app.set('view engine', 'handlebars')
 
 // MONGO ATLAS CONNECTION
 mongoose.connect('mongodb+srv://leonel89011:NH1FG7njdGNQ0xII@cluster0.f4euppj.mongodb.net/?retryWrites=true&w=majority')
@@ -55,7 +55,7 @@ io.on('connection', (socket) => {
     socket.on('add-product', (product) => {
         storage.save(product)
             .then((id) => {
-                io.emit('product-added', {...product, id: id} )
+                io.emit('product-added', { ...product, id: id })
             })
             .catch((error) => {
                 io.emit('error', error)
