@@ -1,5 +1,5 @@
 const express = require('express')
-const Storage = require('../../Utils/storage.js')
+const Storage = require('../dao/storageFS.js')
 
 const router = express.Router()
 
@@ -37,7 +37,7 @@ router.get("/api/carts/:cid", (req, res) => {
 
 //Endpoint
 router.post("/api/carts", isValid, (req, res) => {
-    if(!req.validCart) {
+    if (!req.validCart) {
         res.status(400).send(`The cart has no products`)
         return
     }
@@ -58,20 +58,20 @@ router.post("/api/carts/:cid/product/:pid", (req, res) => {
     const pid = parseInt(req.params.pid)
     storage.getById(cid)
         .then((response) => {
-            if(response === null) {
+            if (response === null) {
                 res.status(404).send(`There is no cart with id ${cid}`)
                 return
             }
             console.log("Cart exists!")
             let newProductList = response.products
             const productToAdd = newProductList.find((prod) => prod.id === pid)
-            if(productToAdd) {
+            if (productToAdd) {
                 newProductList.map((prod) => prod.id === pid ? { id: pid, quantity: prod.quantity++ } : { ...prod })
             }
             else {
                 newProductList.push({ id: pid, quantity: 1 })
             }
-            const newCart = { id: cid, products: newProductList}
+            const newCart = { id: cid, products: newProductList }
             storage.updateCart(newCart)
                 .then((response) => {
                     res.status(200).send(response)

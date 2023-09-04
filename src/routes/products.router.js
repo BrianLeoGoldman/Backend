@@ -1,5 +1,5 @@
 const express = require('express')
-const Storage = require('../../Utils/storage.js')
+const Storage = require('../dao/storageFS.js')
 
 const router = express.Router()
 
@@ -30,7 +30,7 @@ router.get("/api/products", (req, res) => {
     console.log("All products have been requested")
     storage.getAll()
         .then((response) => {
-            if(limit && limit > 0) {
+            if (limit && limit > 0) {
                 const limitedResponse = response.slice(0, limit);
                 res.status(200).send(limitedResponse)
             }
