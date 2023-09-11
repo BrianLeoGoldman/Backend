@@ -15,8 +15,16 @@ router.use((req, res, next) => {
 // Endpoints
 
 router.get("/api/productsMongo", (req, res) => {
-    console.log("All products have been requested")
-    storage.getAll()
+    console.log("GET products")
+    let limit = req.query.limit || 10
+    let page = req.query.page || 1
+    let query = req.query.query || null
+    let sort = req.query.sort || null
+    console.log(`Limit: ${limit}`)
+    console.log(`Page: ${page}`)
+    console.log(`Query: ${query}`)
+    console.log(`Sort: ${sort}`)
+    storage.getAll(limit, page, query, sort)
         .then((response) => {
             res.status(200).send(response)
         })
