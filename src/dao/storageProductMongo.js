@@ -40,9 +40,14 @@ class Storage {
         }
     }
 
-    async getAll() {
+    async getAll(limit, page, query, sort) {
         try {
-            let products = await productModel.find()
+            // let products = await productModel.find()
+            let filter = {}
+            if(query) {
+                filter = {category: query}
+            }
+            let products = await productModel.paginate(filter, {limit: limit, page: page})
             return products
         }
         catch (error) {
