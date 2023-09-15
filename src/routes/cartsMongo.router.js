@@ -27,7 +27,6 @@ router.get("/api/cartsMongo/:cid", (req, res) => {
 })
 
 router.post("/api/cartsMongo", (req, res) => {
-    // TODO: creates the cart but it is not adding anything!!!
     const cart = req.body
     console.log(`Amount of products in the cart to be added: ${cart.length}`)
     storage.save(cart)
@@ -42,15 +41,58 @@ router.post("/api/cartsMongo", (req, res) => {
 router.put("/api/cartsMongo/:cid", (req, res) => {
     const { cid } = req.params
     const products = req.body
-    console.log(cid)
-    console.log(products)
     storage.updateWithProducts(cid, products)
         .then((response) => {
             if (response === null) {
                 res.status(404).send(`There is no cart with id ${cid}`)
                 return
             }
-            console.log("Cart exists!")
+            res.status(200).send(response)
+        })
+        .catch((error) => {
+            res.status(500).send(`${error}`)
+        })
+})
+
+router.put("/api/cartsMongo/:cid/products/:pid",(req, res) => {
+    const { cid, pid } = req.params
+    const amount = req.body
+    storage.updateAmount(cid, pid, amount.amount)
+        .then((response) => {
+            if (response === null) {
+                res.status(404).send(`There is no cart with id ${cid}`)
+                return
+            }
+            res.status(200).send(response)
+        })
+        .catch((error) => {
+            res.status(500).send(`${error}`)
+        })
+})
+
+router.delete("/api/cartsMongo/:cid/products/:pid", (req, res) => {
+    const { cid, pid } = req.params
+    storage.deleteProduct(cid, pid)
+        .then((response) => {
+            if (response === null) {
+                res.status(404).send(`There is no cart with id ${cid}`)
+                return
+            }
+            res.status(200).send(response)
+        })
+        .catch((error) => {
+            res.status(500).send(`${error}`)
+        })
+})
+
+router.delete("/api/cartsMongo/:cid", (req, res) => {
+    const { cid } = req.params
+    storage.deleteAllProducts(cid)
+        .then((response) => {
+            if (response === null) {
+                res.status(404).send(`There is no cart with id ${cid}`)
+                return
+            }
             res.status(200).send(response)
         })
         .catch((error) => {

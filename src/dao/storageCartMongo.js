@@ -14,7 +14,7 @@ class Storage {
 
     async getById(id) {
         try {
-            let cart = await cartModel.findById(id)
+            let cart = await cartModel.find({_id: id})
             return cart
         }
         catch (error) {
@@ -34,6 +34,43 @@ class Storage {
         }
     }
 
+    async updateAmount(cid, pid, amount) {
+        try {
+            //console.log(`${cid} ${pid} ${amount}`)
+            let cart = await cartModel.findById(cid)
+            cart.products.map((elem) => elem.product == pid ? elem.amount = amount : null )
+            let result = await cartModel.updateOne({ _id: cid }, cart)
+            return result
+        }
+        catch (error) {
+            throw new Error('There was an error when getting cart with id ' + cid)
+        }
+    }
+
+    async deleteProduct(cid, pid) {
+        try {
+            let cart = await cartModel.findById(cid)
+            cart.products = cart.products.filter((elem) => elem.product != pid)
+            let result = await cartModel.updateOne({ _id: cid }, cart)
+            return result
+        }
+        catch (error) {
+            throw new Error('There was an error when getting cart with id ' + cid)
+        }
+    }
+
+    async deleteAllProducts(cid) {
+        try {
+            let cart = await cartModel.findById(cid)
+            cart.products = []
+            let result = await cartModel.updateOne({ _id: cid }, cart)
+            return result
+        }
+        catch (error) {
+            throw new Error('There was an error when getting cart with id ' + cid)
+        }
+    }
+
 
 /*     async update(id, product) {
         try {
@@ -42,36 +79,6 @@ class Storage {
         }
         catch (error) {
             throw new Error('There was an error when updating product with id ' + id)
-        }
-    }
-
-    async updateCart(cart) {
-        // COMPLETE
-    }
-
-    
-    async getAll(limit, page, query, sort) {
-        try {
-            // let products = await productModel.find()
-            let filter = {}
-            if (query) {
-                filter = { category: query }
-            }
-            let products = await productModel.paginate(filter, { limit: limit, page: page })
-            return products
-        }
-        catch (error) {
-            throw new Error('There was an error when getting all products')
-        }
-    }
-
-    async deleteById(id) {
-        try {
-            let result = await productModel.deleteOne({ _id: id })
-            return result
-        }
-        catch (error) {
-            throw new Error('There was an error when deleting product with id ' + id)
         }
     }
 
