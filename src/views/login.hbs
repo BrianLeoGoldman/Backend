@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' localhost:8080; default-src 'self'">
+    <title>Login</title>
+</head>
+<body>
+    <div class="login">
+        <h2>Login with your username and password</h2>
+        <form method="POST" action="/api/login">
+            <div class="labels-inputs">
+                <label for="username" class="username">Username</label>
+                <input type="text" name="username" class="input" required>
+                <label for="password" class="password">Password</label>
+                <input type="password" name="password" class="input" required>
+            </div>
+            <button type="submit" class="login-button">Login</button>
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+</body>
+</html>

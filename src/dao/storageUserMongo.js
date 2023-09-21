@@ -2,13 +2,32 @@ const { userModel } = require('./models/users.model.js')
 
 class Storage {
 
+    async notExists(username) {
+        try {
+            let user = await userModel.findOne({ username: username })
+            return !user ? true : false
+        }
+        catch (error) {
+            throw new Error(`There was an error when checking for user ${username}`)
+        }
+    }
+
     async save(user) {
         try {
+            const username = user.username
             const firstname = user.firstname
             const lastname = user.lastname
+            const password = user.password
             const email = user.email
-            let result = await userModel.create({ firstname, lastname, email })
-            return result
+            let exists = await userModel.findOne( {username : username} )
+            if (!exists) {
+                let result = await userModel.create({ username, firstname, lastname, password, email })
+                return result
+            }
+            else {
+                throw new Error(`Username ${username} already exists`)
+            }
+            
         }
         catch (error) {
             throw new Error('There was an error when saving user ' + error)
@@ -23,10 +42,6 @@ class Storage {
         catch (error) {
             throw new Error('There was an error when updating user with id ' + id)
         }
-    }
-
-    async updateCart(cart) {
-        // COMPLETE
     }
 
     async getById(id) {
@@ -66,6 +81,21 @@ class Storage {
         }
         catch (error) {
             throw new Error('There was an error when deleting all users')
+        }
+    }
+
+    async getLoginInfo(username, password) {
+        try {
+            let user = await userModel.findOne({ username: username })
+            if (user.password == password) {
+                return user
+            }
+            else {
+                throw new Error(`Password is not correct`)
+            }
+        }
+        catch (error) {
+            throw new Error(`${error}`)
         }
     }
 }

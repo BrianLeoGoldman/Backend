@@ -1,4 +1,7 @@
 const express = require('express')
+const Storage = require('../dao/storageUserMongo.js')
+
+const storage = new Storage()
 
 const router = express.Router()
 
@@ -56,15 +59,75 @@ router.get('/api/session', (req, res) => {
     }
 })
 
-router.get('/api/login', (req, res) => {
-    const { username, password } = req.query
-    if (username != 'admin' && password != 'admin1234') {
-        return res.send('Login failed')
+router.post('/api/register', (req, res) => {
+    const { username, firstname, lastname, password, email } = req.body
+    if (!username || !firstname || !lastname || !password || !email) {
+        return res.send('Information missing')
     }
-    req.session.user = username
-    req.session.admin = true
-    console.log(req.session)
-    res.send('Login successfull!')
+    if (username == 'adminCoder') {
+        res.send('You cannot use that username')
+    }
+    storage.notExists(username)
+        .then((response) => {
+            if(response) {
+                let user = {
+                    username: username,
+                    firstname: firstname,
+                    lastname: lastname,
+                    password: password,
+                    email: email
+                }
+                storage.save(user)
+                    .then((response) => {
+                        req.session.user = username
+                        req.session.role = user
+                        res.redirect("/realtimeproducts")
+                    })
+                    .catch((error) => {
+                        res.send(`${error}`)
+                    })
+            }
+            else {
+                return res.send(`User ${username} already exists`)
+            }
+        })
+        .catch((error) => {
+            return res.send('Error when checking for user')
+        })
+})
+
+router.post('/api/login', (req, res) => {
+    const { username, password } = req.body
+    if (!username || !password) {
+        return res.send('Information missing')
+    }
+    if (username == 'adminCoder' && password == 'adminCod3r123') {
+        req.session.user = 'adminCoder'
+        req.session.role = admin
+        console.log("Admin login completed")
+        res.redirect("/realtimeproducts")
+    }
+    storage.notExists(username)
+        .then((response) => {
+            if(response) {
+                return res.send(`User ${username} does not exists`)
+            }
+            else {
+                storage.getLoginInfo(username, password)
+                    .then((response) => {
+                        req.session.user = username
+                        req.session.role = user
+                        console.log("User login completed")
+                        res.redirect("/realtimeproducts")
+                    })
+                    .catch((error) => {
+                        res.send(`${error}`)
+                    })
+            }
+        })
+        .catch((error) => {
+            return res.send('Error when checking for user')
+        })
 })
 
 router.get('/api/private', auth, (req, res) => {
@@ -77,7 +140,7 @@ router.get('/api/logout', (req, res) => {
             return res.json({ status: 'Logout error', body: err })
         }
         else {
-            res.send('logout successful!')
+            res.redirect("/login")
         }
     })
 })
