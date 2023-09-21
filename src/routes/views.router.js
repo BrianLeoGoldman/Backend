@@ -23,5 +23,9 @@ router.get("/realtimeproducts", (req, res) => {
         })
 })
 
+router.get("/login", (req, res) => {
+    res.render('login.hbs')
+})
+
 
 module.exports = router

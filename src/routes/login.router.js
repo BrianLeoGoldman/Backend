@@ -56,8 +56,8 @@ router.get('/api/session', (req, res) => {
     }
 })
 
-router.get('/api/login', (req, res) => {
-    const { username, password } = req.query
+router.post('/api/login', (req, res) => {
+    const { username, password } = req.body
     if (username != 'admin' && password != 'admin1234') {
         return res.send('Login failed')
     }
