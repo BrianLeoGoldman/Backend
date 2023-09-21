@@ -4,11 +4,20 @@ class Storage {
 
     async save(user) {
         try {
+            const username = user.username
             const firstname = user.firstname
             const lastname = user.lastname
+            const password = user.password
             const email = user.email
-            let result = await userModel.create({ firstname, lastname, email })
-            return result
+            let exists = await userModel.findOne( {username : username} )
+            if (!exists) {
+                let result = await userModel.create({ username, firstname, lastname, password, email })
+                return result
+            }
+            else {
+                throw new Error(`Username ${username} already exists`)
+            }
+            
         }
         catch (error) {
             throw new Error('There was an error when saving user ' + error)
