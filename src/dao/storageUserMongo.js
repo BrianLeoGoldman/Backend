@@ -2,6 +2,16 @@ const { userModel } = require('./models/users.model.js')
 
 class Storage {
 
+    async notExists(username) {
+        try {
+            let user = await userModel.findOne({ username: username })
+            return !user ? true : false
+        }
+        catch (error) {
+            throw new Error(`There was an error when checking for user ${username}`)
+        }
+    }
+
     async save(user) {
         try {
             const username = user.username
@@ -77,10 +87,15 @@ class Storage {
     async getLoginInfo(username, password) {
         try {
             let user = await userModel.findOne({ username: username })
-            return user
+            if (user.password == password) {
+                return user
+            }
+            else {
+                throw new Error(`Password is not correct`)
+            }
         }
         catch (error) {
-            throw new Error('There was an error when getting login info')
+            throw new Error(`${error}`)
         }
     }
 }

@@ -64,22 +64,35 @@ router.post('/api/register', (req, res) => {
     if (!username || !firstname || !lastname || !password || !email) {
         return res.send('Information missing')
     }
-    if (username == 'admin') {
+    if (username == 'adminCoder') {
         res.send('You cannot use that username')
     }
-    let user = {
-        username: username,
-        firstname: firstname,
-        lastname: lastname,
-        password: password,
-        email: email
-    }
-    storage.save(user)
+    storage.notExists(username)
         .then((response) => {
-            res.send('User registered ok!')
+            if(response) {
+                let user = {
+                    username: username,
+                    firstname: firstname,
+                    lastname: lastname,
+                    password: password,
+                    email: email
+                }
+                storage.save(user)
+                    .then((response) => {
+                        req.session.user = username
+                        req.session.role = user
+                        res.redirect("/realtimeproducts")
+                    })
+                    .catch((error) => {
+                        res.send(`${error}`)
+                    })
+            }
+            else {
+                return res.send(`User ${username} already exists`)
+            }
         })
         .catch((error) => {
-            res.send(`Error: ${error}`)
+            return res.send('Error when checking for user')
         })
 })
 
@@ -88,22 +101,32 @@ router.post('/api/login', (req, res) => {
     if (!username || !password) {
         return res.send('Information missing')
     }
-    if (username == 'admin' && password == 'admin1234') {
-        req.session.user = username
-        req.session.admin = true
-        res.send('Admin login successfull!')
+    if (username == 'adminCoder' && password == 'adminCod3r123') {
+        req.session.user = 'adminCoder'
+        req.session.role = admin
+        console.log("Admin login completed")
+        res.redirect("/realtimeproducts")
     }
-    storage.getLoginInfo(username, password)
+    storage.notExists(username)
         .then((response) => {
-            console.log("########################")
-            console.log(response)
-            req.session.user = username
-            req.session.admin = false
-            console.log(req.session)
-            res.send('User login successfull!')
+            if(response) {
+                return res.send(`User ${username} does not exists`)
+            }
+            else {
+                storage.getLoginInfo(username, password)
+                    .then((response) => {
+                        req.session.user = username
+                        req.session.role = user
+                        console.log("User login completed")
+                        res.redirect("/realtimeproducts")
+                    })
+                    .catch((error) => {
+                        res.send(`${error}`)
+                    })
+            }
         })
         .catch((error) => {
-            res.send(`Error: ${error}`)
+            return res.send('Error when checking for user')
         })
 })
 
@@ -117,7 +140,7 @@ router.get('/api/logout', (req, res) => {
             return res.json({ status: 'Logout error', body: err })
         }
         else {
-            res.send('logout successful!')
+            res.redirect("/login")
         }
     })
 })
