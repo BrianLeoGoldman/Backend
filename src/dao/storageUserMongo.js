@@ -25,10 +25,6 @@ class Storage {
         }
     }
 
-    async updateCart(cart) {
-        // COMPLETE
-    }
-
     async getById(id) {
         try {
             let user = await userModel.findById(id)
@@ -66,6 +62,16 @@ class Storage {
         }
         catch (error) {
             throw new Error('There was an error when deleting all users')
+        }
+    }
+
+    async getLoginInfo(username, password) {
+        try {
+            let user = await userModel.findOne({ username: username })
+            return user
+        }
+        catch (error) {
+            throw new Error('There was an error when getting login info')
         }
     }
 }

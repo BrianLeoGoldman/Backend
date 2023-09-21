@@ -1,4 +1,7 @@
 const express = require('express')
+const Storage = require('../dao/storageUserMongo.js')
+
+const storage = new Storage()
 
 const router = express.Router()
 
@@ -58,13 +61,26 @@ router.get('/api/session', (req, res) => {
 
 router.post('/api/login', (req, res) => {
     const { username, password } = req.body
-    if (username != 'admin' && password != 'admin1234') {
-        return res.send('Login failed')
+    if (!username || !password) {
+        return res.send('Information missing')
     }
-    req.session.user = username
-    req.session.admin = true
-    console.log(req.session)
-    res.send('Login successfull!')
+    if (username == 'admin' && password == 'admin1234') {
+        req.session.user = username
+        req.session.admin = true
+        res.send('Admin login successfull!')
+    }
+    storage.getLoginInfo(username, password)
+        .then((response) => {
+            console.log("########################")
+            console.log(response)
+            req.session.user = username
+            req.session.admin = false
+            console.log(req.session)
+            res.send('User login successfull!')
+        })
+        .catch((error) => {
+            res.send(`Error: ${error}`)
+        })
 })
 
 router.get('/api/private', auth, (req, res) => {
