@@ -4,12 +4,17 @@ const http = require('http')
 const path = require('path')
 const handlebars = require('express-handlebars')
 const socketIo = require('socket.io')
+const cookieParser = require('cookie-parser')
+const session = require('express-session')
+const FileStore = require('session-file-store')
+const MongoStore = require('connect-mongo')
 const productsRouter = require("./routes/products.router.js")
 const cartRouter = require("./routes/carts.router.js")
 const viewsRouter = require("./routes/views.router.js")
 const productsMongoRouter = require("./routes/productsMongo.router.js")
 const cartsMongoRouter = require("./routes/cartsMongo.router.js")
 const usersMongoRouter = require("./routes/usersMongo.router.js")
+const loginRouter = require("./routes/login.router.js")
 const Storage = require('./dao/storageFS.js')
 const storage = new Storage('products.json')
 const app = express()
@@ -37,13 +42,41 @@ mongoose.connect('mongodb+srv://leonel89011:NH1FG7njdGNQ0xII@cluster0.f4euppj.mo
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, '/public/')))
+// const fileStorage = FileStore(session)
+app.use(cookieParser('CookieS1e2c3r4e5t'))
+app.use(session(
+    {
+        /* store: new fileStorage(
+            {
+                path: './sessions', // Routh where session info is stored
+                ttl: 100, // Time to live (of the session)
+                retries: 0 // Retries for reading the file
+            }
+        ), */
+        store: MongoStore.create(
+            {
+                mongoUrl: 'mongodb+srv://leonel89011:NH1FG7njdGNQ0xII@cluster0.f4euppj.mongodb.net/?retryWrites=true&w=majority',
+                mongoOptions: 
+                {
+                    useNewUrlParser: true, 
+                    useUnifiedTopology: true
+                },
+                ttl: 15
+            }
+        ),
+        secret: 'secretCode', 
+        resave: true, // Keeps session active despite inactivity time
+        saveUninitialized: true // Saves session even if empty
+    }
+))
+
 app.use("/", productsRouter)
 app.use("/", cartRouter)
 app.use("/", viewsRouter)
 app.use("/", productsMongoRouter)
 app.use("/", cartsMongoRouter)
 app.use("/", usersMongoRouter)
-
+app.use("/", loginRouter)
 
 
 io.on('connection', (socket) => {

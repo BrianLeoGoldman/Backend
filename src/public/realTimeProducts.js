@@ -1,4 +1,4 @@
-// import Swal from 'sweetalert2'
+import Swal from 'sweetalert2'
 const socket = io()
 
 socket.on('error', (data) => {

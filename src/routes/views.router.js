@@ -16,11 +16,19 @@ router.use((req, res, next) => {
 router.get("/realtimeproducts", (req, res) => {
     storage.getAll()
         .then((response) => {
-            res.render('realTimeProducts.hbs', { products: response })
+            res.render('realTimeProducts.hbs', { products: response, session: req.session })
         })
         .catch((error) => {
             res.status(500).send(error)
         })
+})
+
+router.get("/login", (req, res) => {
+    res.render('login.hbs')
+})
+
+router.get("/register", (req, res) => {
+    res.render('register.hbs')
 })
 
 
