@@ -1,4 +1,5 @@
 const { userModel } = require('./models/users.model.js')
+const bcrypt = require("bcrypt")
 
 class Storage {
 
@@ -14,10 +15,11 @@ class Storage {
 
     async save(user) {
         try {
+            const createdHash = await bcrypt.hash(user.password, 10)
             const username = user.username
             const firstname = user.firstname
             const lastname = user.lastname
-            const password = user.password
+            const password = createdHash
             const email = user.email
             let exists = await userModel.findOne( {username : username} )
             if (!exists) {
@@ -87,7 +89,8 @@ class Storage {
     async getLoginInfo(username, password) {
         try {
             let user = await userModel.findOne({ username: username })
-            if (user.password == password) {
+            const isValidPassword = await bcrypt.compare(password, user.password)
+            if (isValidPassword) {
                 return user
             }
             else {

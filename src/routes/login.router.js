@@ -103,7 +103,7 @@ router.post('/api/login', (req, res) => {
     }
     if (username == 'adminCoder' && password == 'adminCod3r123') {
         req.session.user = 'adminCoder'
-        req.session.role = admin
+        req.session.role = 'admin'
         console.log("Admin login completed")
         res.redirect("/realtimeproducts")
     }
@@ -116,7 +116,7 @@ router.post('/api/login', (req, res) => {
                 storage.getLoginInfo(username, password)
                     .then((response) => {
                         req.session.user = username
-                        req.session.role = user
+                        req.session.role = 'user'
                         console.log("User login completed")
                         res.redirect("/realtimeproducts")
                     })
