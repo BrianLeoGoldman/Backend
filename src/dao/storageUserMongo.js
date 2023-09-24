@@ -3,32 +3,31 @@ const { createHash, isValidPassword } = require('../../Utils/hashing.js')
 
 class Storage {
 
-    async notExists(username) {
+    async notExists(nickname) {
         try {
-            let user = await userModel.findOne({ username: username })
+            let user = await userModel.findOne({ nickname: nickname })
             return !user ? true : false
         }
         catch (error) {
-            throw new Error(`There was an error when checking for user ${username}`)
+            throw new Error(`There was an error when checking for user ${nickname}`)
         }
     }
 
     async save(user) {
         try {
             const createdHash = createHash(user.password)
-            console.log(createdHash)
-            const username = user.username
+            const nickname = user.nickname
             const firstname = user.firstname
             const lastname = user.lastname
             const password = createdHash
             const email = user.email
-            let exists = await userModel.findOne( {username : username} )
+            let exists = await userModel.findOne({ nickname: nickname } )
             if (!exists) {
-                let result = await userModel.create({ username, firstname, lastname, password, email })
+                let result = await userModel.create({ nickname, firstname, lastname, password, email })
                 return result
             }
             else {
-                throw new Error(`Username ${username} already exists`)
+                throw new Error(`Nickname ${nickname} already exists`)
             }
             
         }
@@ -59,7 +58,9 @@ class Storage {
 
     async getByField(field, value) {
         try {
+            console.log(`Field: ${field} Value: ${value}`)
             let user = await userModel.findOne({field: value})
+            
             return user
         }
         catch (error) {
@@ -97,9 +98,9 @@ class Storage {
         }
     }
 
-    async getLoginInfo(username, password) {
+    async getLoginInfo(nickname, password) {
         try {
-            let user = await userModel.findOne({ username: username })
+            let user = await userModel.findOne({ nickname: nickname })
             const isValid = isValidPassword(password, user.password)
             if (isValid) {
                 return user

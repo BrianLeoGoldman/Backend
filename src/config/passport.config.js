@@ -1,6 +1,6 @@
 const passport = require('passport')
 const local = require('passport-local')
-const { Storage } = require('../dao/storageUserMongo.js')
+const Storage = require('../dao/storageUserMongo.js')
 const {createHash} = require('../../Utils/hashing.js')
 
 const storage = new Storage()
@@ -17,21 +17,23 @@ const initializePassport = () => {
         // Then the strategy recieves a function with 4 arguments: the request object, the authentication fields and the resolution callback (done)
         async (req, username, password, done) => {
             // We get the data from the request body
-            const {firstname, lastname, email} = req.body
+            const {nickname, firstname, lastname, email} = req.body
             try {
-                let user = await storage.getByField(email, username)
+                console.log('Starting strategy...')
+                let user = await storage.getByField('email', username)
                 if(user) {
                     console.log('User already exists')
                     // Done is the resolution callback. In this case, we return it with error as null and the user as false
                     return done(null, false)
                 }
                 let newUser = {
-                    username: username,
+                    nickname: nickname,
                     firstname: firstname,
                     lastname: lastname,
                     password: password,
                     email: email
                 }
+                console.log("We are going to save the user...")
                 let result = await storage.save(newUser)
                 // We return the callback with no error and the user registered
                 return done(null, result)
@@ -44,4 +46,13 @@ const initializePassport = () => {
     ))
 }
 
-export default initializePassport
+passport.serializeUser((user, done) => {
+    done(null, user.id)
+})
+
+passport.deserializeUser(async (id, done) => {
+    let user = await storage.findById(id)
+    done(null, user)
+})
+
+module.exports = {initializePassport}

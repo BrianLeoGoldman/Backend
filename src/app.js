@@ -21,6 +21,8 @@ const app = express()
 const httpServer = http.createServer(app)
 const io = socketIo(httpServer)
 const PORT = 8080
+const passport = require('passport')
+const {initializePassport} = require('../src/config/passport.config.js')
 
 // HANDLEBARS
 app.engine('handlebars', handlebars.engine())
@@ -69,6 +71,9 @@ app.use(session(
         saveUninitialized: true // Saves session even if empty
     }
 ))
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use("/", productsRouter)
 app.use("/", cartRouter)
