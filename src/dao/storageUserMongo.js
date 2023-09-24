@@ -57,6 +57,16 @@ class Storage {
         }
     }
 
+    async getByField(field, value) {
+        try {
+            let user = await userModel.findOne({field: value})
+            return user
+        }
+        catch (error) {
+            throw new Error(`There was an error when getting user with ${field} ${value}`)
+        }
+    }
+
     async getAll() {
         try {
             let users = await userModel.find()
