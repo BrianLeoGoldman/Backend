@@ -55,4 +55,28 @@ router.get('/failLogin', (req, res) => {
     res.render('failure.hbs', { message: "Something went wrong with your login" })
 })
 
+// Login route via GitHub
+
+// We call this endpoint from the handlebars view
+// It calls the passport-github middleware defined in passport.config
+// and asks autorization to access the user profile. When profile info
+// is accesed, it is send to the specified callback
+router.get('/api/sessions/github', passport.authenticate(
+    'github', 
+    {scope: ['user:email']}), 
+    async(req, res) => {}
+)
+
+// This callback must match the callback route on configured on GitHub
+// GitHub will do the final redirection once login was successful in 
+// establishing the session
+router.get('/api/sessions/githubcallback', passport.authenticate(
+    'github',
+    {failureRedirect: '/login'}),
+    async(req, res) => {
+        req.session.user = req.user.nickname,
+            res.redirect('/realtimeproducts')
+    }
+)
+
 module.exports = router

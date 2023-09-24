@@ -1,5 +1,6 @@
 const passport = require('passport')
 const local = require('passport-local')
+const GitHubStrategy = require('passport-github2')
 const Storage = require('../dao/storageUserMongo.js')
 const {isValidPassword} = require('../../Utils/hashing.js')
 
@@ -62,7 +63,39 @@ const initializePassport = () => {
             catch(error) {
                 return done(error)
             }
-        }))
+        }
+    ))
+
+    passport.use('github', new GitHubStrategy(
+        { 
+            clientID: 'Iv1.76d609a69f7b980e', 
+            clientSecret: '8a7aadeff7aaa635e9caa39e539dee11373e5961', 
+            callbackURL: 'http://localhost:8080/api/sessions/githubcallback'
+        },
+        async (accesToken, refreshToken, profile, done) => {
+            try {
+                console.log(profile) // Profile is the GitHub profile info
+                let user = await storage.getByEmail(profile._json.email)
+                if(!user) { // User doesn't exists in our site
+                    let newUser = {
+                        nickname: profile._json.login, // We fill out fields not present in GitHub
+                        firstname: profile._json.name,
+                        lastname: profile._json.login, // We fill out fields not present in GitHub
+                        password: '', // Not necessary since we authenticate by a third party
+                        email: profile._json.email
+                    }
+                    let result = await storage.save(newUser)
+                    done(null, result)
+                }
+                else { // User already existis
+                    done(null, user)
+                }
+            }
+            catch(error) {
+                return done(error)
+            }
+        }
+    ))
 }
 
 passport.serializeUser((user, done) => {
