@@ -1,6 +1,5 @@
 const express = require('express')
 const Storage = require('../dao/storageUserMongo.js')
-const passport = require('passport')
 
 const storage = new Storage()
 
@@ -60,7 +59,7 @@ router.get('/api/session', (req, res) => {
     }
 })
 
-/* router.post('/api/register', (req, res) => {
+router.post('/api/register', (req, res) => {
     const { nickname, firstname, lastname, password, email } = req.body
     if (!nickname || !firstname || !lastname || !password || !email) {
         return res.send('Information missing')
@@ -95,19 +94,6 @@ router.get('/api/session', (req, res) => {
         .catch((error) => {
             return res.send('Error when checking for user')
         })
-}) */
-
-// Register route using Passport
-router.post('/api/register', passport.authenticate(
-        'register', // Name of the strategy to use defined in passport.config.js
-        {failureRedirect: '/failRegister'}), // Options
-    async (req, res) => {
-        res.send({status: 'Success', message: 'User registered'})
-})
-
-router.get('/failRegister', async (req, res) => {
-    console.log('Failed startegy')
-    res.send({error: 'Failed'})
 })
 
 router.post('/api/login', (req, res) => {

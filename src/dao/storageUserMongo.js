@@ -60,11 +60,22 @@ class Storage {
         try {
             console.log(`Field: ${field} Value: ${value}`)
             let user = await userModel.findOne({field: value})
-            
+            console.log(user)
             return user
         }
         catch (error) {
             throw new Error(`There was an error when getting user with ${field} ${value}`)
+        }
+    }
+
+    async getByEmail(email) {
+        try {
+            let user = await userModel.findOne({ email: email })
+            console.log(user)
+            return user
+        }
+        catch (error) {
+            throw new Error(`There was an error when getting user with $email ${email}`)
         }
     }
 

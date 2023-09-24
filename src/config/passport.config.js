@@ -1,7 +1,7 @@
 const passport = require('passport')
 const local = require('passport-local')
 const Storage = require('../dao/storageUserMongo.js')
-const {createHash} = require('../../Utils/hashing.js')
+const {isValidPassword} = require('../../Utils/hashing.js')
 
 const storage = new Storage()
 
@@ -20,7 +20,7 @@ const initializePassport = () => {
             const {nickname, firstname, lastname, email} = req.body
             try {
                 console.log('Starting strategy...')
-                let user = await storage.getByField('email', username)
+                let user = await storage.getByEmail(username)
                 if(user) {
                     console.log('User already exists')
                     // Done is the resolution callback. In this case, we return it with error as null and the user as false
@@ -43,7 +43,26 @@ const initializePassport = () => {
                 return done(`Error when registering user: ${error}`)
             }
         }
-    ))
+    )),
+
+    passport.use('login', new LocalStrategy(
+        {usernameField: 'email'},
+        async (username, password, done) => {
+            try {
+                const user = await storage.getByEmail(username)
+                if(!user) {
+                    console.log(`User with email ${username} doesn't exists`)
+                    return done(null, false)
+                }
+                if(!isValidPassword(password, user.password)){
+                    return done(null, false)
+                }
+                return done(null, user)
+            }
+            catch(error) {
+                return done(error)
+            }
+        }))
 }
 
 passport.serializeUser((user, done) => {
@@ -51,7 +70,7 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser(async (id, done) => {
-    let user = await storage.findById(id)
+    let user = await storage.getById(id)
     done(null, user)
 })
 
