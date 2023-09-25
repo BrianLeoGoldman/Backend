@@ -15,12 +15,15 @@ const productsMongoRouter = require("./routes/productsMongo.router.js")
 const cartsMongoRouter = require("./routes/cartsMongo.router.js")
 const usersMongoRouter = require("./routes/usersMongo.router.js")
 const loginRouter = require("./routes/login.router.js")
+const passportRouter = require("./routes/passport.router.js")
 const Storage = require('./dao/storageFS.js')
 const storage = new Storage('products.json')
 const app = express()
 const httpServer = http.createServer(app)
 const io = socketIo(httpServer)
 const PORT = 8080
+const passport = require('passport')
+const {initializePassport} = require('../src/config/passport.config.js')
 
 // HANDLEBARS
 app.engine('handlebars', handlebars.engine())
@@ -69,6 +72,9 @@ app.use(session(
         saveUninitialized: true // Saves session even if empty
     }
 ))
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use("/", productsRouter)
 app.use("/", cartRouter)
@@ -76,7 +82,8 @@ app.use("/", viewsRouter)
 app.use("/", productsMongoRouter)
 app.use("/", cartsMongoRouter)
 app.use("/", usersMongoRouter)
-app.use("/", loginRouter)
+// app.use("/", loginRouter)
+app.use("/", passportRouter)
 
 
 io.on('connection', (socket) => {

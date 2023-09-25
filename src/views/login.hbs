@@ -11,14 +11,17 @@
         <h2>Login with your username and password</h2>
         <form method="POST" action="/api/login">
             <div class="labels-inputs">
-                <label for="username" class="username">Username</label>
-                <input type="text" name="username" class="input" required>
+                <label for="email" class="email">Email</label>
+                <input type="text" name="email" class="input" required>
                 <label for="password" class="password">Password</label>
                 <input type="password" name="password" class="input" required>
             </div>
             <button type="submit" class="login-button">Login</button>
         </form>
         <p>You don't have an account? Please <a href="http://localhost:8080/register">Register</a></p>
+    </div>
+    <div>
+        <a href="/api/sessions/github"><button>Entrar con GitHub</button></a>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
 </body>
