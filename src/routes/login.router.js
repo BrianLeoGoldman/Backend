@@ -60,18 +60,18 @@ router.get('/api/session', (req, res) => {
 })
 
 router.post('/api/register', (req, res) => {
-    const { username, firstname, lastname, password, email } = req.body
-    if (!username || !firstname || !lastname || !password || !email) {
+    const { nickname, firstname, lastname, password, email } = req.body
+    if (!nickname || !firstname || !lastname || !password || !email) {
         return res.send('Information missing')
     }
-    if (username == 'adminCoder') {
-        res.send('You cannot use that username')
+    if (nickname == 'adminCoder') {
+        res.send('You cannot use that nickname')
     }
-    storage.notExists(username)
+    storage.notExists(nickname)
         .then((response) => {
             if(response) {
                 let user = {
-                    username: username,
+                    nickname: nickname,
                     firstname: firstname,
                     lastname: lastname,
                     password: password,
@@ -79,7 +79,7 @@ router.post('/api/register', (req, res) => {
                 }
                 storage.save(user)
                     .then((response) => {
-                        req.session.user = username
+                        req.session.user = nickname
                         req.session.role = user
                         res.redirect("/realtimeproducts")
                     })
@@ -88,7 +88,7 @@ router.post('/api/register', (req, res) => {
                     })
             }
             else {
-                return res.send(`User ${username} already exists`)
+                return res.send(`User ${nickname} already exists`)
             }
         })
         .catch((error) => {
@@ -97,25 +97,25 @@ router.post('/api/register', (req, res) => {
 })
 
 router.post('/api/login', (req, res) => {
-    const { username, password } = req.body
-    if (!username || !password) {
+    const { nickname, password } = req.body
+    if (!nickname || !password) {
         return res.send('Information missing')
     }
-    if (username == 'adminCoder' && password == 'adminCod3r123') {
+    if (nickname == 'adminCoder' && password == 'adminCod3r123') {
         req.session.user = 'adminCoder'
         req.session.role = 'admin'
         console.log("Admin login completed")
         res.redirect("/realtimeproducts")
     }
-    storage.notExists(username)
+    storage.notExists(nickname)
         .then((response) => {
             if(response) {
-                return res.send(`User ${username} does not exists`)
+                return res.send(`User ${nickname} does not exists`)
             }
             else {
-                storage.getLoginInfo(username, password)
+                storage.getLoginInfo(nickname, password)
                     .then((response) => {
-                        req.session.user = username
+                        req.session.user = nickname
                         req.session.role = 'user'
                         console.log("User login completed")
                         res.redirect("/realtimeproducts")

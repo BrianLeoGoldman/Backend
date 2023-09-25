@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const userCollection = 'users'
 
 const userSchema = new mongoose.Schema({
-    username: { type: String, required: true, max: 100 },
+    nickname: { type: String, required: true, max: 100 },
     firstname: { type: String, required: true, max: 100 },
     lastname: { type: String, required: true, max: 100 },
     password: { type: String, required: true, max: 100 },
