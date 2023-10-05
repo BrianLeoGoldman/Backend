@@ -1,6 +1,7 @@
 const passport = require('passport')
 const local = require('passport-local')
 const GitHubStrategy = require('passport-github2')
+const jwt = require('passport-jwt')
 const UserStorage = require('../dao/storageUserMongo.js')
 const CartStorage = require('../dao/storageCartMongo.js')
 const {isValidPassword} = require('../../Utils/hashing.js')
@@ -10,6 +11,19 @@ const cartStorage = new CartStorage()
 
 // We create a strategy
 const LocalStrategy = local.Strategy 
+const JWTStrategy = jwt.Strategy // Core of JWT Strategy
+const ExtractJWT = jwt.ExtractJwt // JWT Extractor (for headers, cookie, etc)
+
+// We create the cookieExtractor function
+const cookieExtractor = req => {
+    let token = null
+    // We check there is a cookie to extract
+    if(req && req.cookies) {
+        token = req.cookies['jwtCookie'] // We extract the cookie
+    }
+    return token
+}
+
 const initializePassport = () => {
     
     // We register a new strategy with name 'register'
@@ -103,6 +117,18 @@ const initializePassport = () => {
             }
         }
     ))
+
+    passport.use('jwt', new JWTStrategy({
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+        secretOrKey: 'CookieS1e2c3r4e5t' // Check its the same as in app.js
+    }, async(jwt_payload, done) => {
+        try {
+            return done(null, jwt_payload)
+        }
+        catch(error) {
+            return done(error)
+        }
+    }))    
 }
 
 passport.serializeUser((user, done) => {

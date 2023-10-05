@@ -1,5 +1,6 @@
 const express = require('express')
 const { generateToken, authToken } = require('../../Utils/utils.js')
+const passport = require('passport')
 
 const router = express.Router()
 
@@ -40,9 +41,14 @@ router.post('/jwt/login', (req, res) => {
     res.cookie('jwtCookie', access_Token, { maxAge: 60 * 60 * 100, httpOnly: true }).send({ message: 'Login ok' })
 })
 
-router.get('/current', authToken, (req, res) => {
+router.get('/jwt/current', authToken, (req, res) => {
     // We are using authToken, so we know there is an user object in our request (otherwise middleware would give error)
     res.send({status: 'success', payload: req.user})
+})
+
+// We use session: false because we don't use express-session
+router.get('/jwt-passport/current', passport.authenticate('jwt', {session:false}), (req, res) => {
+    res.send(req.user)
 })
 
 module.exports = router
