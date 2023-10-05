@@ -1,6 +1,6 @@
 const { cartModel } = require('./models/carts.model.js')
 
-class Storage {
+class CartStorage {
 
     async save(cart) {
         try {
@@ -93,4 +93,4 @@ class Storage {
     } */
 }
 
-module.exports = Storage
+module.exports = CartStorage
