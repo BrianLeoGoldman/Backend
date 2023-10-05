@@ -1,9 +1,9 @@
 const express = require('express')
-const Storage = require('../dao/storageUserMongo.js')
+const UserStorage = require('../dao/storageUserMongo.js')
 
 const router = express.Router()
 
-const storage = new Storage()
+const storage = new UserStorage()
 
 // Router middleware
 router.use((req, res, next) => {

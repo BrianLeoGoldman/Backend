@@ -1,6 +1,6 @@
 const { productModel } = require('./models/products.model.js')
 
-class Storage {
+class ProductStorage {
 
     async save(product) {
         try {
@@ -75,4 +75,4 @@ class Storage {
     }
 }
 
-module.exports = Storage
+module.exports = ProductStorage
