@@ -1,7 +1,7 @@
 const { userModel } = require('./models/users.model.js')
 const { createHash, isValidPassword } = require('../../Utils/hashing.js')
 
-class Storage {
+class UserStorage {
 
     async notExists(nickname) {
         try {
@@ -21,9 +21,12 @@ class Storage {
             const lastname = user.lastname
             const password = createdHash
             const email = user.email
+            const age = user.age
+            const role = user.role
+            const cart = user.cart
             let exists = await userModel.findOne({ nickname: nickname } )
             if (!exists) {
-                let result = await userModel.create({ nickname, firstname, lastname, password, email })
+                let result = await userModel.create({ nickname, firstname, lastname, password, email, age, cart, role })
                 return result
             }
             else {
@@ -126,4 +129,4 @@ class Storage {
     }
 }
 
-module.exports = Storage
+module.exports = UserStorage

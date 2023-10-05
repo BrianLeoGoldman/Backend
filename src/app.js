@@ -16,6 +16,7 @@ const cartsMongoRouter = require("./routes/cartsMongo.router.js")
 const usersMongoRouter = require("./routes/usersMongo.router.js")
 const loginRouter = require("./routes/login.router.js")
 const passportRouter = require("./routes/passport.router.js")
+const jwtRouter = require("./routes/jwt.router.js")
 const Storage = require('./dao/storageFS.js')
 const storage = new Storage('products.json')
 const app = express()
@@ -84,6 +85,7 @@ app.use("/", cartsMongoRouter)
 app.use("/", usersMongoRouter)
 // app.use("/", loginRouter)
 app.use("/", passportRouter)
+app.use("/", jwtRouter)
 
 
 io.on('connection', (socket) => {

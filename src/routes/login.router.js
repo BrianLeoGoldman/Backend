@@ -1,7 +1,7 @@
 const express = require('express')
-const Storage = require('../dao/storageUserMongo.js')
+const UserStorage = require('../dao/storageUserMongo.js')
 
-const storage = new Storage()
+const storage = new UserStorage()
 
 const router = express.Router()
 

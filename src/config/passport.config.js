@@ -1,14 +1,31 @@
 const passport = require('passport')
 const local = require('passport-local')
 const GitHubStrategy = require('passport-github2')
-const Storage = require('../dao/storageUserMongo.js')
+const jwt = require('passport-jwt')
+const UserStorage = require('../dao/storageUserMongo.js')
+const CartStorage = require('../dao/storageCartMongo.js')
 const {isValidPassword} = require('../../Utils/hashing.js')
 
-const storage = new Storage()
+const userStorage = new UserStorage()
+const cartStorage = new CartStorage()
 
 // We create a strategy
 const LocalStrategy = local.Strategy 
+const JWTStrategy = jwt.Strategy // Core of JWT Strategy
+const ExtractJWT = jwt.ExtractJwt // JWT Extractor (for headers, cookie, etc)
+
+// We create the cookieExtractor function
+const cookieExtractor = req => {
+    let token = null
+    // We check there is a cookie to extract
+    if(req && req.cookies) {
+        token = req.cookies['jwtCookie'] // We extract the cookie
+    }
+    return token
+}
+
 const initializePassport = () => {
+    
     // We register a new strategy with name 'register'
     passport.use('register', new LocalStrategy(
         // The strategy receives the options passReqToCallback and usernameField
@@ -18,24 +35,28 @@ const initializePassport = () => {
         // Then the strategy recieves a function with 4 arguments: the request object, the authentication fields and the resolution callback (done)
         async (req, username, password, done) => {
             // We get the data from the request body
-            const {nickname, firstname, lastname, email} = req.body
+            const {nickname, firstname, lastname, email, age} = req.body
             try {
                 console.log('Starting strategy...')
-                let user = await storage.getByEmail(username)
+                let user = await userStorage.getByEmail(username)
                 if(user) {
                     console.log('User already exists')
                     // Done is the resolution callback. In this case, we return it with error as null and the user as false
                     return done(null, false)
                 }
+                let cart = await cartStorage.save([])
                 let newUser = {
                     nickname: nickname,
                     firstname: firstname,
                     lastname: lastname,
                     password: password,
-                    email: email
+                    email: email,
+                    age: age,
+                    role: "user",
+                    cart: cart._id
                 }
                 console.log("We are going to save the user...")
-                let result = await storage.save(newUser)
+                let result = await userStorage.save(newUser)
                 // We return the callback with no error and the user registered
                 return done(null, result)
             }
@@ -50,7 +71,7 @@ const initializePassport = () => {
         {usernameField: 'email'},
         async (username, password, done) => {
             try {
-                const user = await storage.getByEmail(username)
+                const user = await userStorage.getByEmail(username)
                 if(!user) {
                     console.log(`User with email ${username} doesn't exists`)
                     return done(null, false)
@@ -75,7 +96,7 @@ const initializePassport = () => {
         async (accesToken, refreshToken, profile, done) => {
             try {
                 console.log(profile) // Profile is the GitHub profile info
-                let user = await storage.getByEmail(profile._json.email)
+                let user = await userStorage.getByEmail(profile._json.email)
                 if(!user) { // User doesn't exists in our site
                     let newUser = {
                         nickname: profile._json.login, // We fill out fields not present in GitHub
@@ -84,7 +105,7 @@ const initializePassport = () => {
                         password: '', // Not necessary since we authenticate by a third party
                         email: profile._json.email
                     }
-                    let result = await storage.save(newUser)
+                    let result = await userStorage.save(newUser)
                     done(null, result)
                 }
                 else { // User already existis
@@ -96,6 +117,18 @@ const initializePassport = () => {
             }
         }
     ))
+
+    passport.use('jwt', new JWTStrategy({
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+        secretOrKey: 'CookieS1e2c3r4e5t' // Check its the same as in app.js
+    }, async(jwt_payload, done) => {
+        try {
+            return done(null, jwt_payload)
+        }
+        catch(error) {
+            return done(error)
+        }
+    }))    
 }
 
 passport.serializeUser((user, done) => {
@@ -103,7 +136,7 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser(async (id, done) => {
-    let user = await storage.getById(id)
+    let user = await userStorage.getById(id)
     done(null, user)
 })
 
